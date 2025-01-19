@@ -1,7 +1,6 @@
 - name: Build and Push Docker Image
   hosts: localhost
   become: true
-  become_user: terno
   vars:
     ansible_python_interpreter: /usr/bin/python3.12
     docker_host: "unix:///var/run/docker.sock"
@@ -33,24 +32,3 @@
         docker_host: "unix:///var/run/docker.sock"
         push: true
         source: local
-
-    # - name: Start a container with a command
-    #   community.docker.docker_container:
-    #     name: my-nginx
-    #     image: terno9144/jenkins_images:latest
-    #     ports:
-    #       - "8084:80"
-
-    # - name: Check if index.html is accessible
-    #   command: curl -o /dev/null -s -w "%{http_code}" http://localhost:8084
-    #   register: curl_result
-
-    # - name: 
-    #   debug: 
-    #     msg: "{{ curl_result }}"
-    #   when: curl_result
-
-    # - name: Validate HTTP response
-    #   fail:
-    #     msg: "The HTTP response is not 200! Something went wrong."
-    #   when: curl_result.stdout != "200"
