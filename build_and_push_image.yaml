@@ -34,5 +34,5 @@
 
     - name: Save image tag to file for sharing
       copy:
-        content: "{{ image_tag }}"
+        content: "{{ unique_tag }}"
         dest: /tmp/image_tag.txt
