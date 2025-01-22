@@ -1,6 +1,8 @@
 - name: Build and Push Docker Image
   hosts: localhost
   become: true
+  vars:
+    unique_tag: "{{ ansible_date_time.iso8601_basic_short }}"
     
   tasks:
     - name: Remove an image
@@ -17,7 +19,7 @@
     - name: Build Nginx image
       community.docker.docker_image_build:
         name: terno9144/jenkins_images
-        tag: latest
+        tag: "{{ unique_tag }}"
         path: "{{ playbook_dir }}"
         dockerfile: Dockerfile
 
@@ -25,7 +27,12 @@
       community.docker.docker_image:
         api_version: "1.45"
         name: terno9144/jenkins_images
-        tag: latest
+        tag: "{{ unique_tag }}"
         docker_host: "unix:///var/run/docker.sock"
         push: true
         source: local
+
+    - name: Save image tag to file for sharing
+      copy:
+        content: "{{ image_tag }}"
+        dest: /tmp/image_tag.txt
